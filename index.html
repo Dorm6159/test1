@@ -1,12 +1,792 @@
-<html>
-  <header>
-    <title>
-      Test Public Web
-    </title>
-  </header>
-  <body>
-    <h1>
-      Hello World!!
-    </h1>
-  </body>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thaweechai Jantapa — Portfolio</title>
+<meta name="description" content="Thaweechai (Dome) Jantapa — Computer Science student, Computer Vision & Software Development portfolio">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#090b10;
+    --bg-1:#0d1017;
+    --panel:#11151d;
+    --panel-2:#161b25;
+    --border:#232a38;
+    --border-soft:#1a2029;
+    --white:#eef1f7;
+    --muted:#7c8698;
+    --muted-2:#4d5566;
+    --red:#ff4d5e;
+    --red-dim:rgba(255,77,94,.14);
+    --blue:#3ea1ff;
+    --blue-dim:rgba(62,161,255,.14);
+    --mono:'JetBrains Mono', ui-monospace, monospace;
+    --sans:'IBM Plex Sans Thai','IBM Plex Sans', sans-serif;
+    --radius:10px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--white);
+    font-family:var(--sans);
+    line-height:1.65;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:'';
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+    background-size:42px 42px;
+    pointer-events:none;
+    z-index:0;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 20%, transparent 75%);
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  ::selection{background:var(--red); color:#fff;}
+
+  .mono{font-family:var(--mono);}
+  .wrap{max-width:1120px; margin:0 auto; padding:0 28px; position:relative; z-index:1;}
+  .eyebrow{
+    font-family:var(--mono); font-size:12.5px; letter-spacing:.06em;
+    color:var(--muted); display:flex; align-items:center; gap:10px; margin-bottom:16px;
+    text-transform:none;
+  }
+  .eyebrow::before{content:''; width:16px; height:1px; background:var(--border); display:inline-block;}
+  .eyebrow .dot{color:var(--red);}
+  h1,h2,h3{font-family:var(--mono); font-weight:700; letter-spacing:-.01em;}
+  .section-title{
+    font-size:clamp(24px,3.4vw,36px);
+    color:var(--white);
+    margin-bottom:10px;
+  }
+  .section-title .accent{color:var(--blue);}
+  .section-sub{color:var(--muted); font-size:15px; max-width:560px; margin-bottom:44px;}
+  section{position:relative; z-index:1; padding:110px 0;}
+  section + section{border-top:1px solid var(--border-soft);}
+
+  /* ---------- traffic lights ---------- */
+  .lights{display:flex; gap:7px; align-items:center;}
+  .lights span{width:11px; height:11px; border-radius:50%; display:inline-block;}
+  .lights .l1{background:var(--red);}
+  .lights .l2{background:var(--blue);}
+  .lights .l3{background:var(--white); opacity:.85;}
+
+  /* ---------- nav ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    background:rgba(9,11,16,.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border-soft);
+  }
+  .navbar{
+    max-width:1120px; margin:0 auto; padding:0 28px;
+    display:flex; align-items:center; justify-content:space-between;
+    height:56px;
+  }
+  .brand{display:flex; align-items:center; gap:12px; font-family:var(--mono); font-size:14px; font-weight:600;}
+  .brand .path{color:var(--muted); font-weight:400;}
+  .tabs{display:flex; gap:2px; overflow-x:auto; scrollbar-width:none;}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tabs a{
+    font-family:var(--mono); font-size:12.5px; color:var(--muted);
+    padding:8px 14px; border-right:1px solid var(--border-soft);
+    white-space:nowrap; position:relative; transition:color .15s;
+  }
+  .tabs a:hover{color:var(--white);}
+  .tabs a::after{
+    content:''; position:absolute; left:14px; right:14px; bottom:0; height:2px;
+    background:var(--red); transform:scaleX(0); transform-origin:left; transition:transform .2s;
+  }
+  .tabs a:nth-child(even)::after{background:var(--blue);}
+  .tabs a.active{color:var(--white);}
+  .tabs a.active::after{transform:scaleX(1);}
+  .navcta{
+    font-family:var(--mono); font-size:12px; padding:7px 14px; border:1px solid var(--border);
+    border-radius:6px; color:var(--white); white-space:nowrap; margin-left:14px;
+    transition:border-color .15s, background .15s;
+  }
+  .navcta:hover{border-color:var(--blue); background:var(--blue-dim);}
+
+  /* ---------- hero ---------- */
+  .hero{padding:150px 0 100px; border-top:none;}
+  .hero-grid{display:grid; grid-template-columns:1.15fr .85fr; gap:56px; align-items:center;}
+  .status-pill{
+    display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:12px;
+    color:var(--blue); border:1px solid rgba(62,161,255,.35); background:var(--blue-dim);
+    padding:6px 12px; border-radius:20px; margin-bottom:26px;
+  }
+  .status-pill i{width:7px; height:7px; border-radius:50%; background:var(--blue); box-shadow:0 0 0 0 rgba(62,161,255,.6); animation:pulse 1.8s infinite;}
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(62,161,255,.55);}
+    70%{box-shadow:0 0 0 8px rgba(62,161,255,0);}
+    100%{box-shadow:0 0 0 0 rgba(62,161,255,0);}
+  }
+  .hero h1{
+    font-size:clamp(34px,5vw,54px); line-height:1.12; color:var(--white); margin-bottom:18px;
+  }
+  .hero h1 .nick{color:var(--red);}
+  .hero-role{
+    font-family:var(--sans); font-size:17px; color:var(--muted); max-width:520px; margin-bottom:30px;
+  }
+  .hero-role b{color:var(--white); font-weight:600;}
+  .hero-actions{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:38px;}
+  .btn{
+    font-family:var(--mono); font-size:13.5px; padding:12px 22px; border-radius:7px;
+    display:inline-flex; align-items:center; gap:8px; border:1px solid transparent; cursor:pointer;
+    transition:transform .15s, box-shadow .15s, background .15s, border-color .15s;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn-primary{background:var(--red); color:#fff;}
+  .btn-primary:hover{box-shadow:0 8px 24px -8px rgba(255,77,94,.55);}
+  .btn-outline{border-color:var(--border); color:var(--white);}
+  .btn-outline:hover{border-color:var(--blue); background:var(--blue-dim);}
+  .hero-meta{display:flex; gap:26px; flex-wrap:wrap; font-family:var(--mono); font-size:12px; color:var(--muted-2);}
+  .hero-meta a{color:var(--muted); border-bottom:1px dotted var(--border);}
+  .hero-meta a:hover{color:var(--blue); border-color:var(--blue);}
+
+  .term{
+    background:var(--panel); border:1px solid var(--border); border-radius:var(--radius);
+    overflow:hidden; box-shadow:0 30px 60px -30px rgba(0,0,0,.7);
+  }
+  .term-bar{
+    display:flex; align-items:center; justify-content:space-between; padding:10px 14px;
+    border-bottom:1px solid var(--border-soft); background:var(--panel-2);
+  }
+  .term-bar .name{font-family:var(--mono); font-size:11.5px; color:var(--muted);}
+  .term-body{padding:18px 20px; font-family:var(--mono); font-size:13px; color:var(--muted);}
+  .term-body .k{color:var(--blue);}
+  .term-body .s{color:var(--red);}
+  .term-body .v{color:var(--white);}
+  .term-body .c{color:var(--muted-2);}
+  .caret{display:inline-block; width:7px; height:14px; background:var(--red); vertical-align:middle; animation:blink 1s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0;}}
+
+  .photo-frame{
+    position:relative; border-radius:var(--radius); overflow:hidden; border:1px solid var(--border);
+    aspect-ratio:4/5;
+    background:var(--panel);
+  }
+  .photo-frame img{width:100%; height:100%; object-fit:cover; filter:grayscale(.15) contrast(1.03);}
+  .photo-frame::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(160deg, rgba(255,77,94,.16), transparent 40%, rgba(62,161,255,.18));
+    mix-blend-mode:overlay;
+  }
+  .photo-tag{
+    position:absolute; bottom:12px; left:12px; right:12px;
+    background:rgba(9,11,16,.72); backdrop-filter:blur(6px);
+    border:1px solid var(--border); border-radius:7px; padding:8px 12px;
+    font-family:var(--mono); font-size:11px; color:var(--muted); display:flex; justify-content:space-between;
+    z-index:2;
+  }
+  .photo-tag b{color:var(--white); font-weight:500;}
+
+  .marquee{
+    margin-top:64px; border-top:1px solid var(--border-soft); border-bottom:1px solid var(--border-soft);
+    padding:16px 0; overflow:hidden; white-space:nowrap;
+  }
+  .marquee div{display:inline-flex; gap:36px; animation:scroll 26s linear infinite; padding-right:36px;}
+  .marquee span{font-family:var(--mono); font-size:13px; color:var(--muted-2); letter-spacing:.03em;}
+  .marquee span b{color:var(--muted);}
+  @keyframes scroll{from{transform:translateX(0);} to{transform:translateX(-50%);}}
+
+  /* ---------- about ---------- */
+  .about-grid{display:grid; grid-template-columns:1fr 1fr; gap:60px;}
+  .about-grid p{color:var(--muted); font-size:15.5px; margin-bottom:16px;}
+  .about-grid p b{color:var(--white); font-weight:600;}
+  .facts{border:1px solid var(--border); border-radius:var(--radius); overflow:hidden;}
+  .fact{display:grid; grid-template-columns:120px 1fr; padding:14px 18px; font-size:14px;}
+  .fact + .fact{border-top:1px solid var(--border-soft);}
+  .fact .k{font-family:var(--mono); color:var(--muted-2); font-size:12px; padding-top:2px;}
+  .fact .v{color:var(--white);}
+
+  /* ---------- skills ---------- */
+  .skill-groups{display:grid; grid-template-columns:repeat(2,1fr); gap:18px;}
+  .skill-card{border:1px solid var(--border); border-radius:var(--radius); padding:22px 22px 18px; background:var(--panel);}
+  .skill-card .head{display:flex; align-items:center; gap:10px; margin-bottom:16px;}
+  .skill-card .head .idx{font-family:var(--mono); font-size:11px; color:var(--red); border:1px solid rgba(255,77,94,.35); background:var(--red-dim); padding:2px 7px; border-radius:4px;}
+  .skill-card .head h3{font-size:15px; color:var(--white); font-family:var(--mono); font-weight:600;}
+  .chips{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{
+    font-family:var(--mono); font-size:12px; color:var(--muted); border:1px solid var(--border);
+    padding:6px 11px; border-radius:6px; transition:all .15s; background:var(--panel-2);
+  }
+  .chip:hover{color:var(--white); border-color:var(--blue);}
+
+  /* ---------- achievements (git log) ---------- */
+  .gitlog{border-left:1px solid var(--border); margin-left:8px;}
+  .commit{position:relative; padding:0 0 44px 34px;}
+  .commit:last-child{padding-bottom:0;}
+  .commit::before{
+    content:''; position:absolute; left:-6px; top:2px; width:11px; height:11px; border-radius:50%;
+    background:var(--bg); border:2px solid var(--red);
+  }
+  .commit.blue::before{border-color:var(--blue);}
+  .commit-head{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:8px;}
+  .hash{font-family:var(--mono); font-size:11.5px; color:var(--red); background:var(--red-dim); padding:3px 8px; border-radius:4px; border:1px solid rgba(255,77,94,.3);}
+  .commit.blue .hash{color:var(--blue); background:var(--blue-dim); border-color:rgba(62,161,255,.3);}
+  .commit-head h3{font-size:17px; color:var(--white); font-family:var(--mono); font-weight:600;}
+  .commit p{color:var(--muted); font-size:14.5px; max-width:640px; margin-bottom:16px;}
+  .commit-gallery{display:flex; gap:10px; flex-wrap:wrap;}
+  .commit-gallery img{
+    width:150px; height:100px; object-fit:cover; border-radius:7px; border:1px solid var(--border);
+    cursor:zoom-in; transition:transform .15s, border-color .15s;
+  }
+  .commit-gallery img:hover{transform:translateY(-3px); border-color:var(--blue);}
+
+  /* ---------- projects ---------- */
+  .proj-grid{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+  .proj-card{
+    border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; background:var(--panel);
+    display:flex; flex-direction:column; transition:border-color .2s, transform .2s;
+  }
+  .proj-card:hover{border-color:var(--border); transform:translateY(-4px);}
+  .proj-titlebar{
+    display:flex; align-items:center; justify-content:space-between; padding:10px 14px;
+    background:var(--panel-2); border-bottom:1px solid var(--border-soft);
+  }
+  .proj-titlebar .fname{font-family:var(--mono); font-size:11.5px; color:var(--muted);}
+  .proj-shots{display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border-soft);}
+  .proj-shots.single{grid-template-columns:1fr;}
+  .proj-shots img{width:100%; height:150px; object-fit:cover; cursor:zoom-in; background:var(--bg-1);}
+  .proj-noimg{
+    height:150px; display:flex; align-items:center; justify-content:center;
+    background:
+      repeating-linear-gradient(135deg, var(--bg-1) 0 10px, var(--panel-2) 10px 20px);
+    color:var(--muted-2); font-family:var(--mono); font-size:12px;
+  }
+  .proj-body{padding:20px 22px 22px; flex:1; display:flex; flex-direction:column;}
+  .proj-body h3{font-size:18px; color:var(--white); margin-bottom:4px;}
+  .proj-tagline{font-family:var(--mono); font-size:11.5px; color:var(--blue); margin-bottom:12px;}
+  .proj-body .desc{color:var(--muted); font-size:14px; margin-bottom:14px;}
+  .proj-body .role{font-size:13.5px; color:var(--muted); margin-bottom:16px; border-left:2px solid var(--red); padding-left:10px;}
+  .proj-body .role b{color:var(--white); font-weight:500;}
+  .proj-tags{display:flex; flex-wrap:wrap; gap:7px; margin-top:auto;}
+  .tag{font-family:var(--mono); font-size:11px; color:var(--muted-2); border:1px solid var(--border-soft); padding:4px 9px; border-radius:5px;}
+
+  /* ---------- certificates ---------- */
+  .cert-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
+  .cert-card{
+    border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; cursor:pointer;
+    background:var(--panel); transition:transform .15s, border-color .15s;
+  }
+  .cert-card:hover{transform:translateY(-3px); border-color:var(--blue);}
+  .cert-thumb{height:120px; overflow:hidden; background:var(--bg-1);}
+  .cert-thumb img{width:100%; height:100%; object-fit:cover;}
+  .cert-name{font-family:var(--mono); font-size:11.5px; color:var(--muted); padding:10px 12px;}
+  .cert-more-btn{
+    margin-top:24px; display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--mono); font-size:13px; color:var(--white); border:1px solid var(--border);
+    padding:11px 20px; border-radius:7px; cursor:pointer; background:none;
+  }
+  .cert-more-btn:hover{border-color:var(--red); background:var(--red-dim);}
+
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(6,7,10,.88); backdrop-filter:blur(4px);
+    z-index:100; display:none; align-items:center; justify-content:center; padding:30px;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal-box{
+    background:var(--panel); border:1px solid var(--border); border-radius:12px;
+    width:100%; max-width:960px; max-height:86vh; overflow:hidden; display:flex; flex-direction:column;
+  }
+  .modal-head{display:flex; align-items:center; justify-content:space-between; padding:14px 20px; border-bottom:1px solid var(--border-soft); background:var(--panel-2);}
+  .modal-head h3{font-family:var(--mono); font-size:14px; color:var(--white);}
+  .modal-close{font-family:var(--mono); font-size:13px; color:var(--muted); cursor:pointer; border:1px solid var(--border); padding:5px 11px; border-radius:6px;}
+  .modal-close:hover{color:var(--red); border-color:var(--red);}
+  .modal-body{padding:22px; overflow-y:auto; display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+  .modal-body .cert-thumb{height:100px;}
+
+  .lightbox{
+    position:fixed; inset:0; background:rgba(6,7,10,.92); z-index:200; display:none;
+    align-items:center; justify-content:center; padding:40px; cursor:zoom-out;
+  }
+  .lightbox.open{display:flex;}
+  .lightbox img{max-width:100%; max-height:100%; border-radius:8px; border:1px solid var(--border);}
+
+  /* ---------- contact ---------- */
+  .contact-wrap{display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;}
+  .contact-term .term-body{padding:22px 24px;}
+  .contact-term .line{margin-bottom:10px;}
+  .contact-list{display:flex; flex-direction:column; gap:2px;}
+  .contact-row{
+    display:flex; align-items:center; justify-content:space-between; padding:16px 0;
+    border-bottom:1px solid var(--border-soft);
+  }
+  .contact-row .k{font-family:var(--mono); font-size:11.5px; color:var(--muted-2); text-transform:uppercase; letter-spacing:.06em;}
+  .contact-row .v{font-size:15px; color:var(--white);}
+  .contact-row a.v:hover{color:var(--blue);}
+  .contact-row .go{font-family:var(--mono); font-size:12px; color:var(--red);}
+
+  footer{padding:34px 0; text-align:center;}
+  footer p{font-family:var(--mono); font-size:11.5px; color:var(--muted-2);}
+  footer p b{color:var(--muted);}
+
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1; transform:none;}
+
+  @media (max-width:860px){
+    .hero-grid, .about-grid, .contact-wrap{grid-template-columns:1fr;}
+    .skill-groups, .proj-grid{grid-template-columns:1fr;}
+    .cert-grid, .modal-body{grid-template-columns:repeat(2,1fr);}
+    .tabs{display:none;}
+    section{padding:76px 0;}
+    .hero{padding-top:120px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="navbar">
+    <div class="brand"><span class="lights"><span class="l1"></span><span class="l2"></span><span class="l3"></span></span>&nbsp; dome<span class="path">@portfolio</span></div>
+    <nav class="tabs" id="tabs">
+      <a href="#home" class="active">home.tsx</a>
+      <a href="#about">about.md</a>
+      <a href="#skills">skills.json</a>
+      <a href="#achievements">achievements.log</a>
+      <a href="#projects">projects/</a>
+      <a href="#certificates">certs/</a>
+      <a href="#contact">contact.sh</a>
+    </nav>
+    <a href="#contact" class="navcta">ติดต่อ →</a>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <div class="status-pill"><i></i> Web Development · Backend</div>
+          <h1>ทวีชัย จันทะภา<br><span class="nick">"Dome"</span> — Computer Science</h1>
+          <p class="hero-role">
+            นักศึกษาชั้นปีที่ 4 สาขา<b>วิทยาการคอมพิวเตอร์</b> มหาวิทยาลัยกรุงเทพ
+            สนใจงานสาย <b>Web Development</b> และ <b>Backend</b> เป็นหลัก
+            มีประสบการณ์ทำโปรเจกต์ทั้งเว็บ โมบาย และ Computer Vision มาบ้าง
+          </p>
+          <div class="hero-actions">
+            <a href="#projects" class="btn btn-primary">ดูโปรเจกต์ →</a>
+            <a href="#certificates" class="btn btn-outline">ใบรับรอง / เกียรติบัตร</a>
+          </div>
+          <div class="hero-meta">
+            <a href="tel:0948963252">📞 094-896-3252</a>
+            <a href="mailto:thaweechai.jant@bumail.net">✉ thaweechai.jant@bumail.net</a>
+            <a href="https://github.com/Dorm6159" target="_blank" rel="noopener">⌥ github.com/Dorm6159</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="photo-frame">
+            <img src="image/me1.jpg" alt="Thaweechai Jantapa">
+            <div class="photo-tag"><span>portrait.jpg</span><b>Dome, 21</b></div>
+          </div>
+          <div class="term" style="margin-top:16px;">
+            <div class="term-bar"><span class="lights"><span class="l1"></span><span class="l2"></span><span class="l3"></span></span><span class="name">profile.json</span><span></span></div>
+            <div class="term-body">
+<span class="c">{</span><br>
+&nbsp;&nbsp;<span class="k">"name"</span><span class="c">:</span> <span class="v">"Thaweechai Jantapa"</span><span class="c">,</span><br>
+&nbsp;&nbsp;<span class="k">"faculty"</span><span class="c">:</span> <span class="v">"IT & Innovation — CS, Year 4"</span><span class="c">,</span><br>
+&nbsp;&nbsp;<span class="k">"interest"</span><span class="c">:</span> <span class="s">["web-development", "backend"]</span><span class="caret"></span><br>
+<span class="c">}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="marquee">
+        <div>
+          <span><b>Python</b> · YOLOv8-seg · OpenCV · <b>C# / .NET MAUI</b> · Firebase · SQLite · <b>PHP / MySQL</b> · Bootstrap · JavaScript · <b>Git</b></span>
+          <span><b>Python</b> · YOLOv8-seg · OpenCV · <b>C# / .NET MAUI</b> · Firebase · SQLite · <b>PHP / MySQL</b> · Bootstrap · JavaScript · <b>Git</b></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="wrap reveal">
+      <div class="eyebrow"><span class="dot">●</span> 01 / ABOUT</div>
+      <h2 class="section-title">เกี่ยวกับ<span class="accent">ผม</span></h2>
+      <p class="section-sub">พื้นฐานการศึกษาและสิ่งที่กำลังโฟกัสอยู่ตอนนี้</p>
+
+      <div class="about-grid">
+        <div>
+          <p>สวัสดีครับ ผม<b>ทวีชัย จันทะภา</b> ชื่อเล่น <b>โดม</b> อายุ 21 ปี กำลังศึกษาอยู่ชั้นปีที่ 4
+          คณะเทคโนโลยีสารสนเทศและนวัตกรรม สาขาวิทยาการคอมพิวเตอร์ มหาวิทยาลัยกรุงเทพ</p>
+          <p>สนใจงานสาย <b>Web Development</b> และ <b>Backend</b> เป็นหลักครับ ที่ผ่านมาทำโปรเจกต์มาหลายแบบ
+          ทั้งเว็บ แอปมือถือ และมีงานด้าน Computer Vision อยู่บ้าง อย่างการเทรนโมเดล YOLO ไว้ตรวจจับแปลนบ้าน</p>
+          <p>เคยเข้าแข่งขันทักษะวิชาชีพได้รางวัลที่ 1 ระดับประเทศ และรองชนะเลิศอันดับ 2 ระดับภาค
+          สาขาคอมพิวเตอร์โปรแกรมเมอร์ ระดับ ปวช.</p>
+        </div>
+
+        <div class="facts">
+          <div class="fact"><div class="k">NAME</div><div class="v">ทวีชัย จันทะภา (Dome)</div></div>
+          <div class="fact"><div class="k">AGE</div><div class="v">21 ปี</div></div>
+          <div class="fact"><div class="k">UNIVERSITY</div><div class="v">มหาวิทยาลัยกรุงเทพ</div></div>
+          <div class="fact"><div class="k">FACULTY</div><div class="v">เทคโนโลยีสารสนเทศและนวัตกรรม</div></div>
+          <div class="fact"><div class="k">MAJOR</div><div class="v">วิทยาการคอมพิวเตอร์ · ชั้นปีที่ 4</div></div>
+          <div class="fact"><div class="k">FOCUS</div><div class="v">Web Development · Backend</div></div>
+          <div class="fact"><div class="k">EMAIL</div><div class="v">thaweechai.jant@bumail.net</div></div>
+          <div class="fact"><div class="k">GITHUB</div><div class="v"><a href="https://github.com/Dorm6159" target="_blank" rel="noopener">github.com/Dorm6159</a></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="wrap reveal">
+      <div class="eyebrow"><span class="dot">●</span> 02 / SKILLS</div>
+      <h2 class="section-title">Tech <span class="accent">Stack</span></h2>
+      <p class="section-sub">เครื่องมือและภาษาที่ใช้งานจริงในโปรเจกต์ที่ผ่านมา</p>
+
+      <div class="skill-groups">
+        <div class="skill-card">
+          <div class="head"><span class="idx">01</span><h3>Languages</h3></div>
+          <div class="chips">
+            <span class="chip">Python</span><span class="chip">C#</span><span class="chip">JavaScript</span>
+            <span class="chip">PHP</span><span class="chip">HTML</span><span class="chip">CSS</span>
+            <span class="chip">Java</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="head"><span class="idx">02</span><h3>AI & Computer Vision</h3></div>
+          <div class="chips">
+            <span class="chip">YOLOv8-seg</span><span class="chip">OpenCV</span><span class="chip">Shapely</span>
+            <span class="chip">Model Training</span><span class="chip">Kaggle</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="head"><span class="idx">03</span><h3>Web Development</h3></div>
+          <div class="chips">
+            <span class="chip">Bootstrap</span><span class="chip">MySQL / phpMyAdmin</span>
+            <span class="chip">XAMPP</span><span class="chip">FileZilla</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="head"><span class="idx">04</span><h3>Mobile & Backend</h3></div>
+          <div class="chips">
+            <span class="chip">.NET MAUI</span><span class="chip">Firebase</span><span class="chip">SQLite</span>
+            <span class="chip">REST API</span>
+          </div>
+        </div>
+        <div class="skill-card" style="grid-column:1/-1;">
+          <div class="head"><span class="idx">05</span><h3>Tools & Platforms</h3></div>
+          <div class="chips">
+            <span class="chip">VS Code</span><span class="chip">Git / GitHub</span><span class="chip">Microsoft Visio</span>
+            <span class="chip">ER Diagram — Chen / Crow's Foot</span><span class="chip">Discord Webhook</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACHIEVEMENTS -->
+  <section id="achievements">
+    <div class="wrap reveal">
+      <div class="eyebrow"><span class="dot">●</span> 03 / ACHIEVEMENTS</div>
+      <h2 class="section-title">Competition <span class="accent">History</span></h2>
+      <p class="section-sub">ผลงานจากการแข่งขันทักษะวิชาชีพระดับประเทศ</p>
+
+      <div class="gitlog">
+        <div class="commit">
+          <div class="commit-head"><span class="hash">#1st</span><h3>รางวัลชนะเลิศ ระดับประเทศ</h3></div>
+          <p>การแข่งขันทักษะวิชาชีพ สาขาวิชาเทคโนโลยีสารสนเทศ — คอมพิวเตอร์โปรแกรมเมอร์ (ระดับ ปวช.)
+          หัวข้อ "ระบบสั่งจองอาหารออนไลน์" ทำระบบ 4 ส่วน คือ ผู้ดูแลระบบ, ผู้ดูแลร้านอาหาร, สมาชิก/ลูกค้า และผู้ส่งอาหาร
+          มีตั้งแต่ระบบสมาชิก จัดการเมนู คำนวณราคา ออกใบเสร็จเป็น PDF ไปจนถึงติดตามสถานะการจัดส่ง</p>
+          <div class="commit-gallery">
+            <img src="image/Ach1.jpg" alt="เกียรติบัตรรางวัลที่ 1" onclick="openLightbox('image/Ach1.jpg')">
+            <img src="image/Ach1.1.jpg" alt="ภาพบรรยากาศการแข่งขัน" onclick="openLightbox('image/Ach1.1.jpg')">
+          </div>
+        </div>
+
+        <div class="commit blue">
+          <div class="commit-head"><span class="hash">#2nd</span><h3>รางวัลรองชนะเลิศอันดับ 2 ระดับภาค</h3></div>
+          <p>การแข่งขันทักษะวิชาชีพ สาขาวิชาเทคโนโลยีสารสนเทศ — คอมพิวเตอร์โปรแกรมเมอร์ (ระดับ ปวช.)
+          พัฒนาระบบเครือข่ายสังคมออนไลน์ (Social Network) ด้วย HTML, PHP, MySQL, JavaScript, CSS, Bootstrap
+          บน XAMPP ตั้งแต่ระบบสมาชิกไปจนถึงฟีเจอร์ปฏิสัมพันธ์ทางสังคม</p>
+          <div class="commit-gallery">
+            <img src="image/Ach2.jpg" alt="เกียรติบัตรรางวัลที่ 2" onclick="openLightbox('image/Ach2.jpg')">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="wrap reveal">
+      <div class="eyebrow"><span class="dot">●</span> 04 / PROJECTS</div>
+      <h2 class="section-title">Selected <span class="accent">Work</span></h2>
+      <p class="section-sub">โปรเจกต์ที่ผ่านมา</p>
+
+      <div class="proj-grid">
+        <!-- Sketch to Spec -->
+        <div class="proj-card">
+          <div class="proj-titlebar"><span class="lights"><span class="l1"></span><span class="l2"></span><span class="l3"></span></span><span class="fname">sketch-to-spec/</span></div>
+          <div class="proj-shots">
+            <img src="image/SCG1.jpg" alt="Sketch to Spec screenshot 1" onclick="openLightbox('image/SCG1.jpg')">
+            <img src="image/SCG2.jpg" alt="Sketch to Spec screenshot 2" onclick="openLightbox('image/SCG2.jpg')">
+          </div>
+          <div class="proj-body">
+            <h3>Sketch to Spec</h3>
+            <div class="proj-tagline">โปรเจกต์ความร่วมมือกับ SCG</div>
+            <p class="desc">เว็บแอปที่สแกนแปลนบ้าน 2D แล้วแปลงเป็นโมเดล 3D สำหรับดูและตรวจสอบผังก่อนเริ่มงานก่อสร้าง</p>
+            <p class="role"><b>หน้าที่ของผม:</b> เทรนโมเดล YOLOv8-seg บน Kaggle สำหรับตรวจจับผัง ห้อง ประตู และหน้าต่าง
+            โดยใช้ dataset CubiCasa5K (ทีมอีกส่วนพัฒนาส่วน backend ด้วย Python + OpenCV เพื่อคัดกรองผลลัพธ์จากโมเดลอีกชั้น
+            และใช้ Shapely ช่วยวิเคราะห์มุม แสดงผล 3D ด้วย Three.js และหน้าเว็บด้วย React)</p>
+            <div class="proj-tags">
+              <span class="tag">Python</span><span class="tag">YOLOv8-seg</span><span class="tag">OpenCV</span>
+              <span class="tag">Shapely</span><span class="tag">Kaggle</span><span class="tag">Three.js</span><span class="tag">React</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- LeadLedger -->
+        <div class="proj-card">
+          <div class="proj-titlebar"><span class="lights"><span class="l1"></span><span class="l2"></span><span class="l3"></span></span><span class="fname">leadledger/</span></div>
+          <div class="proj-shots">
+            <img src="image/L1.PNG" alt="LeadLedger screenshot 1" onclick="openLightbox('image/L1.PNG')">
+            <img src="image/L2.PNG" alt="LeadLedger screenshot 2" onclick="openLightbox('image/L2.PNG')">
+          </div>
+          <div class="proj-body">
+            <h3>LeadLedger</h3>
+            <div class="proj-tagline">.NET MAUI · Mobile App · ทำร่วมกับเพื่อน</div>
+            <p class="desc">แอปบริหารจัดการพนักงานและงานสำหรับหัวหน้างาน/เจ้าของกิจการขนาดเล็ก ใช้งานได้ทั้งออนไลน์และออฟไลน์
+            พอกลับมาออนไลน์ระบบจะ sync ข้อมูลให้อัตโนมัติ</p>
+            <p class="role"><b>ฟีเจอร์หลัก:</b> ระบบยืนยันตัวตนแยกตาม Owner ID, จัดการพนักงานรายชั่วโมง/เงินเดือน,
+            มอบหมายงานและติดตามสถานะ, บันทึกชั่วโมงทำงาน/OT, จัดการวันลา, คำนวณเงินเดือน และแดชบอร์ดสรุปรายวัน</p>
+            <div class="proj-tags">
+              <span class="tag">.NET MAUI</span><span class="tag">C#</span><span class="tag">Firebase</span>
+              <span class="tag">SQLite</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- DMP POS -->
+        <div class="proj-card">
+          <div class="proj-titlebar"><span class="lights"><span class="l1"></span><span class="l2"></span><span class="l3"></span></span><span class="fname">dmp-pos/</span></div>
+          <div class="proj-noimg">// no preview image</div>
+          <div class="proj-body">
+            <h3>DMP POS</h3>
+            <div class="proj-tagline">Point of Sale System · ทำร่วมกับเพื่อน</div>
+            <p class="desc">ระบบขายหน้าร้าน (POS) สำหรับร้านค้า มีฟังก์ชันหลัก 8 อย่างที่ใช้งานทั่วไปในร้าน</p>
+            <p class="role"><b>ฟังก์ชันหลัก:</b> เข้าสู่ระบบ, แสดง/จัดการรายการสินค้า, จัดการพนักงาน,
+            นำเข้า-ส่งออกไฟล์ CSV, สรุปยอดขาย, สรุปรายการสั่งซื้อ, สมัครสมาชิก และจัดการสมาชิก</p>
+            <div class="proj-tags">
+              <span class="tag">POS System</span><span class="tag">CSV Import/Export</span><span class="tag">Sales Report</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- IoT Smart Trash -->
+        <div class="proj-card">
+          <div class="proj-titlebar"><span class="lights"><span class="l1"></span><span class="l2"></span><span class="l3"></span></span><span class="fname">smart-trash-bin/</span></div>
+          <div class="proj-shots single">
+            <img src="image/IOT_1.jpg" alt="IoT Smart Trash Bin" onclick="openLightbox('image/IOT_1.jpg')">
+          </div>
+          <div class="proj-body">
+            <h3>IoT ถังขยะอัจฉริยะ</h3>
+            <div class="proj-tagline">IoT + Discord Notification · รับผิดชอบหลัก</div>
+            <p class="desc">ถังขยะอัจฉริยะที่คาดการณ์อัตราการเพิ่มขึ้นของขยะ และแจ้งเตือนผ่าน Discord เมื่อระดับขยะใกล้เต็ม</p>
+            <p class="role"><b>การทำงาน:</b> ระบบตรวจวัดและประมาณ % ปริมาณขยะในถัง เมื่อเกิน 80% จะแท็กชื่อผู้รับผิดชอบ
+            ที่กำหนดไว้ล่วงหน้าและส่งการแจ้งเตือนอัตโนมัติเข้า Discord</p>
+            <div class="proj-tags">
+              <span class="tag">IoT</span><span class="tag">Discord Webhook</span><span class="tag">Predictive Alert</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- CERTIFICATES -->
+  <section id="certificates">
+    <div class="wrap reveal">
+      <div class="eyebrow"><span class="dot">●</span> 05 / CERTIFICATES</div>
+      <h2 class="section-title">Certificates & <span class="accent">Courses</span></h2>
+      <p class="section-sub">ใบรับรองและประกาศนียบัตรที่ผ่านมา — คลิกเพื่อดูรูปขนาดใหญ่ / ไฟล์ทั้งหมด</p>
+ 
+      <div class="cert-grid" id="certPreview">
+        <!-- filled by JS from certData (first 4) -->
+      </div>
+ 
+      <button class="cert-more-btn" onclick="openCertModal()">ดูทั้งหมด (<span id="certCount">0</span>) →</button>
+    </div>
+  </section>
+ 
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap reveal">
+      <div class="eyebrow"><span class="dot">●</span> 06 / CONTACT</div>
+      <h2 class="section-title">มาคุยงาน<span class="accent">กัน</span></h2>
+      <p class="section-sub">สนใจงานสาย Web Development และ Backend — ทักมาได้เลยครับ</p>
+ 
+      <div class="contact-wrap">
+        <div class="term contact-term">
+          <div class="term-bar"><span class="lights"><span class="l1"></span><span class="l2"></span><span class="l3"></span></span><span class="name">contact.sh</span><span></span></div>
+          <div class="term-body">
+            <div class="line"><span class="c">$</span> whoami</div>
+            <div class="line"><span class="v">Thaweechai "Dome" Jantapa — CS Student</span></div>
+            <div class="line" style="margin-top:14px;"><span class="c">$</span> cat interest.txt</div>
+            <div class="line"><span class="s">web development, backend</span><span class="caret"></span></div>
+          </div>
+        </div>
+ 
+        <div class="contact-list">
+          <div class="contact-row">
+            <div><div class="k">Phone</div><a class="v" href="tel:0948963252">094-896-3252</a></div>
+            <div class="go">call →</div>
+          </div>
+          <div class="contact-row">
+            <div><div class="k">Email</div><a class="v" href="mailto:thaweechai.jant@bumail.net">thaweechai.jant@bumail.net</a></div>
+            <div class="go">mail →</div>
+          </div>
+          <div class="contact-row">
+            <div><div class="k">GitHub</div><a class="v" href="https://github.com/Dorm6159" target="_blank" rel="noopener">github.com/Dorm6159</a></div>
+            <div class="go">visit →</div>
+          </div>
+          <div class="contact-row">
+            <div><div class="k">University</div><span class="v">มหาวิทยาลัยกรุงเทพ · IT & Innovation, CS</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+ 
+<footer>
+  <div class="wrap">
+    <p>© 2026 <b>Thaweechai Jantapa</b> <span class="mono"></span></p>
+  </div>
+</footer>
+ 
+<!-- Certificate modal -->
+<div class="modal-overlay" id="certModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>certificates/ — all files</h3>
+      <div class="modal-close" onclick="closeCertModal()">close ✕</div>
+    </div>
+    <div class="modal-body" id="certModalBody"></div>
+  </div>
+</div>
+ 
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner" onclick="event.stopPropagation()">
+    <img id="lightboxImg" src="" alt="preview" onclick="closeLightbox()">
+    <div class="lightbox-cap" id="lightboxCap"></div>
+  </div>
+</div>
+ 
+<script>
+  // ---- nav active state ----
+  const tabs = document.querySelectorAll('.tabs a');
+  const sections = document.querySelectorAll('main section');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        tabs.forEach(t => t.classList.remove('active'));
+        const match = document.querySelector('.tabs a[href="#'+e.target.id+'"]');
+        if(match) match.classList.add('active');
+      }
+    });
+  }, {rootMargin:'-45% 0px -50% 0px'});
+  sections.forEach(s => io.observe(s));
+ 
+  // ---- reveal on scroll ----
+  const revealEls = document.querySelectorAll('.reveal');
+  const rio = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); rio.unobserve(e.target); } });
+  }, {threshold:.12});
+  revealEls.forEach(el => rio.observe(el));
+ 
+  // ---- lightbox ----
+  function openLightbox(src, pdfLink){
+    document.getElementById('lightboxImg').src = src;
+    const cap = document.getElementById('lightboxCap');
+    if(pdfLink){
+      cap.innerHTML = '<span class="close-hint">ไฟล์ PDF</span><a href="'+pdfLink+'" target="_blank" rel="noopener"><u>เปิดไฟล์ต้นฉบับ ↗</u></a>';
+      cap.classList.add('show');
+    } else {
+      cap.classList.remove('show');
+      cap.innerHTML = '';
+    }
+    document.getElementById('lightbox').classList.add('open');
+  }
+  function closeLightbox(){ document.getElementById('lightbox').classList.remove('open'); }
+  document.getElementById('lightbox').addEventListener('click', (e) => {
+    if(e.target.id === 'lightbox') closeLightbox();
+  });
+ 
+ // ---- certificates data ----
+  const certData = [
+  {name:'TDGA — Cybersecurity Foundation', file:'image/TDGA_CyFounCourse.pdf', thumb:'image/TDGA_CyFounCourse.png', type:'pdf'},
+  {name:'TDGA — AI Governance & Ethics', file:'image/TDGA_AIG&E_cer.pdf', thumb:'image/TDGA_AIG&E_cer.png', type:'pdf'},
+  {name:'Coursera — Generative AI', file:'image/CourseraGenAI.pdf', thumb:'image/CourseraGenAI.png', type:'pdf'},
+  {name:'Coursera — Generating Code with AI', file:'image/Coursera_GeneraingCodeWithAI.pdf', thumb:'image/Coursera_GeneraingCodeWithAI.png', type:'pdf'},
+  {name:'National Skill Standard Assessment Certificate', file:'image/NSSA_cer.pdf', thumb:'image/NSSA_cer.png', type:'pdf'},
+  {name:'Cisco Networking Academy 2', file:'image/Cisco_2.pdf', thumb:'image/Cisco_2.png', type:'pdf'},
+  {name:'Cisco Networking Academy', file:'image/Cisco_1.pdf', thumb:'image/Cisco_1.png', type:'pdf'},
+    {name:'Coursera — IT Specialist', file:'image/CourseraITS.pdf', thumb:'image/CourseraITS.png', type:'pdf'},
+    {name:'Coursera — IT Support', file:'image/CourseraITSUPPORT.pdf', thumb:'image/CourseraITSUPPORT.png', type:'pdf'},
+    {name:'Coursera — Software Architecture / AI Systems', file:'image/CourseraSAAIIS.pdf', thumb:'image/CourseraSAAIIS.png', type:'pdf'},
+    {name:'Coursera — Technology Basics', file:'image/CourseraTBABOCN.pdf', thumb:'image/CourseraTBABOCN.png', type:'pdf'},
+    {name:'Coursera — Technical Support Fundamentals', file:'image/CourseraTSF.pdf', thumb:'image/CourseraTSF.png', type:'pdf'},
+    {name:'Coursera — Open Source AI Year', file:'image/Coursera OSAY.pdf', thumb:'image/Coursera OSAY.png', type:'pdf'},
+    {name:'Speexx Certificate', file:'image/Speexx_certificate.pdf', thumb:'image/Speexx_certificate.png', type:'pdf'},
+    {name:'เกียรติบัตรทักษะวิชาชีพ 1', file:'image/cert1_1660701659.jpg', type:'image'},
+    {name:'เกียรติบัตรทักษะวิชาชีพ 2', file:'image/cert2_1660701659.jpg', type:'image'},
+    {name:'เกียรติบัตรทักษะวิชาชีพ 3', file:'image/cert3_1660701659.jpg', type:'image'},
+    {name:'เกียรติบัตรทักษะวิชาชีพ 4', file:'image/cert4_1660701659.jpg', type:'image'},
+  ];
+ 
+  function certThumb(c){
+    const src = c.type === 'image' ? c.file : c.thumb;
+    if(src){
+      return '<div class="cert-thumb"><img src="'+src+'" alt="'+c.name+'"></div>';
+    }
+    return '<div class="cert-thumb" style="display:flex;align-items:center;justify-content:center;">'+
+      '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#3ea1ff" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 15h6M9 11h6M9 19h4"/></svg>'+
+      '</div>';
+  }
+ 
+  function certCard(c){
+    const div = document.createElement('div');
+    div.className = 'cert-card';
+    div.innerHTML = certThumb(c) + '<div class="cert-name">'+c.name+'</div>';
+    div.onclick = () => {
+      if(c.type === 'image') openLightbox(c.file);
+      else openLightbox(c.thumb, c.file);
+    };
+    return div;
+  }
+ 
+  const previewWrap = document.getElementById('certPreview');
+  certData.slice(0,4).forEach(c => previewWrap.appendChild(certCard(c)));
+  document.getElementById('certCount').textContent = certData.length;
+ 
+  const modalBody = document.getElementById('certModalBody');
+  certData.forEach(c => modalBody.appendChild(certCard(c)));
+ 
+  function openCertModal(){ document.getElementById('certModal').classList.add('open'); }
+  function closeCertModal(){ document.getElementById('certModal').classList.remove('open'); }
+  document.getElementById('certModal').addEventListener('click', (e) => {
+    if(e.target.id === 'certModal') closeCertModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape'){ closeCertModal(); closeLightbox(); }
+  });
+</script>
+</body>
 </html>
